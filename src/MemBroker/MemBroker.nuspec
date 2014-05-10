@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>MemBroker</id>
+    <version>1.0.0.0</version>
+    <authors>Chris Haines</authors>
+    <owners>Chris Haines</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/cjbhaines/MemBroker</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>MemBroker is a lightweight in-memory message broker</description>
+    <tags>.net40 message broker memory</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\MemBroker.dll" target="lib\net40\MemBroker.dll" />
+  </files>
+</package>
