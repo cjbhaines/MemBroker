@@ -18,11 +18,11 @@ Example
 	var messageBroker = new MessageBroker();
 
 	// Subscribe to messages
-	messageBroker.Register(this, new Action<TestMessage>(message =>
+	messageBroker.Register<TestMessage>(this, message =>
 	{
-		// Handle message
-	}));
-
+	// Handle message
+	});
+	
 	// Send message
 	messageBroker.Send(new TestMessage());
 
