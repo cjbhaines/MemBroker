@@ -3,6 +3,8 @@ MemBroker
 
 MemBroker is a lightweight in memory message broker for .NET. It can be used to reduce coupling and to communicate with different components in your system. Full credit must be given to the MVVM light team from whom I took the base concept of their Messenger class. MemBroker is a refactored, cleaner and extended version.
 
+![Build status](https://ci.appveyor.com/api/projects/status/9an98v5la6u18v5q)
+
 Features
 =========
 
