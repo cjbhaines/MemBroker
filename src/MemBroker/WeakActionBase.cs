@@ -4,7 +4,10 @@ namespace MemBroker
 {
     internal abstract class WeakActionBase
     {
-        private WeakReference reference;
+        protected WeakReference reference;
+
+        public Func<object, bool> Filter { get; protected set; }
+        
         protected WeakActionBase(object target)
         {
             reference = new WeakReference(target);
@@ -25,7 +28,6 @@ namespace MemBroker
             reference = null;
         }
 
-        public Func<object, bool> Filter { get; protected set; }
         public abstract void Execute(object parameter);
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeakAction.cs" />
     <Compile Include="WeakActionBase.cs" />
+    <Compile Include="WeakActionListDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MemBroker.nuspec" />

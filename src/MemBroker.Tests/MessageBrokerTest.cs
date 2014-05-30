@@ -174,7 +174,7 @@ namespace MemBroker.Tests
         }
 
         [Test]
-        public void GivenIHaveRegisteredForAMessageTypeButWithAFalseFiler_WhenISendAMessage_ThenTheMessageIsNotReceived()
+        public void GivenIHaveRegisteredForAMessageTypeWithAFalseFiler_WhenISendAMessage_ThenTheMessageIsNotReceived()
         {
             // Arrange
             var messageBroker = new MessageBroker();
@@ -189,7 +189,7 @@ namespace MemBroker.Tests
         }
 
         [Test]
-        public void GivenIHaveRegisteredForAMessageTypeButWithATrueFiler_WhenISendAMessage_ThenTheMessageIsReceived()
+        public void GivenIHaveRegisteredForAMessageTypeWithATrueFiler_WhenISendAMessage_ThenTheMessageIsReceived()
         {
             // Arrange
             var messageBroker = new MessageBroker();
@@ -204,7 +204,7 @@ namespace MemBroker.Tests
         }
 
         [Test]
-        public void GivenIHaveRegisteredForAMessageTypeButWithASpecificFiler_WhenISendAMessageThatMeetsTheFilterCriteria_ThenTheMessageIsReceived()
+        public void GivenIHaveRegisteredForAMessageTypeWithASpecificFiler_WhenISendAMessageThatMeetsTheFilterCriteria_ThenTheMessageIsReceived()
         {
             // Arrange
             var messageBroker = new MessageBroker();
@@ -219,7 +219,7 @@ namespace MemBroker.Tests
         }
 
         [Test]
-        public void GivenIHaveRegisteredForAMessageBaseTypeButWithASpecificFiler_WhenISendASubTypeMessageThatMeetsTheFilterCriteria_ThenTheMessageIsReceived()
+        public void GivenIHaveRegisteredForAMessageBaseTypeWithASpecificFiler_WhenISendASubTypeMessageThatMeetsTheFilterCriteria_ThenTheMessageIsReceived()
         {
             // Arrange
             var messageBroker = new MessageBroker();
@@ -234,7 +234,7 @@ namespace MemBroker.Tests
         }
 
         [Test]
-        public void GivenIHaveRegisteredForAMessageTypeButWithASpecificFiler_WhenISendAMessageThatDoesNotMeetTheFilterCriteria_ThenTheMessageIsNotReceived()
+        public void GivenIHaveRegisteredForAMessageTypeWithASpecificFiler_WhenISendAMessageThatDoesNotMeetTheFilterCriteria_ThenTheMessageIsNotReceived()
         {
             // Arrange
             var messageBroker = new MessageBroker();
@@ -249,7 +249,7 @@ namespace MemBroker.Tests
         }
 
         [Test]
-        public void GivenIHaveRegisteredForAMessageBaseTypeButWithASpecificFiler_WhenISendASubTypeMessageThatDoesNotMeetTheFilterCriteria_ThenTheMessageIsNotReceived()
+        public void GivenIHaveRegisteredForAMessageBaseTypeWithASpecificFiler_WhenISendASubTypeMessageThatDoesNotMeetTheFilterCriteria_ThenTheMessageIsNotReceived()
         {
             // Arrange
             var messageBroker = new MessageBroker();
@@ -261,6 +261,42 @@ namespace MemBroker.Tests
 
             // Assert
             Assert.That(messageReceived, Is.False);
+        }
+
+        [Test]
+        public void GivenIHaveRegisteredForAMessageTypeAndIDestoryTheSubscriber_WhenISendAMessage_ThenTheMessageIsNotReceived()
+        {
+            // Arrange
+            IMessageBroker messageBroker = new MessageBroker();
+            bool actionExecuted = false;
+
+            var subscriberObject = new object();
+            messageBroker.Register(subscriberObject, new Action<TestMessage>(message => actionExecuted = true));
+
+            subscriberObject = null;
+            GC.Collect();
+
+            // Act
+            messageBroker.Send(new TestMessage());
+
+            // Assert
+            Assert.That(actionExecuted, Is.False);
+        }
+
+        [Test]
+        public void GivenIHaveAnAutoCleanupMessageBroker_WhenISendMultipleMessages_ThenTheCleanupDoesNotThrow()
+        {
+            // Arrange
+            var messageBroker = new MessageBroker(TimeSpan.FromMinutes(1));
+            messageBroker.Register(this, new Action<TestMessage>(message => {}));
+
+            // Act
+            Assert.DoesNotThrow(() =>
+            {
+                messageBroker.Send(new TestMessage());
+                messageBroker.Send(new TestMessage());
+                messageBroker.Send(new TestMessage());
+            });
         }
     }
 }
